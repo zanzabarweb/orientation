@@ -340,6 +340,7 @@ function createFormationCard(formation, score = null) {
         </div>
         <div class="formation-title">${formation.nom}</div>
         <div class="formation-meta">
+            ${formation.bac_plus ? `<span class="meta-badge meta-badge-bac">${formation.bac_plus}</span>` : ''}
             <span class="meta-badge">${formation.niveau}</span>
             <span class="meta-badge">${formation.voie || 'Non précisé'}</span>
         </div>
@@ -414,6 +415,7 @@ function createSwipeCard(formation, zIndex) {
             <div class="swipe-card-domaine">${icon}</div>
             <div class="swipe-card-title">${formation.nom}</div>
             <div class="swipe-card-meta">
+                ${formation.bac_plus ? `<span class="swipe-meta-badge swipe-badge-bac">${formation.bac_plus}</span>` : ''}
                 <span class="swipe-meta-badge">${formation.niveau}</span>
                 <span class="swipe-meta-badge">${formation.voie || 'Non précisé'}</span>
             </div>
