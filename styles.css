@@ -1088,9 +1088,7 @@ body {
         flex-direction: row;
         gap: 20px;
     }
-    .btn{
-        display:block;
-    }
+   
     .step-content, .swipe-content {
         padding: 24px;
     }
@@ -1110,6 +1108,8 @@ body {
     
     .btn {
         width: 100%;
+        display:block;
+        text-align:center;
     }
     
     .swipe-container {
