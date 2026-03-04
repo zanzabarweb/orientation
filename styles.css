@@ -392,7 +392,7 @@ body {
 
 .interest-card {
     background: var(--bg-light);
-    border: 3px solid transparent;
+    border: 3px solid #0000001a;
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
