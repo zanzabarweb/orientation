@@ -70,10 +70,12 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
     
-    if (screenId === 'welcome') {
-        document.getElementById('header').style.display = 'none';
-    } else {
+    // Afficher le header uniquement sur les écrans du quiz
+    const quizScreens = ['avatar', 'interests', 'studyStyle', 'level', 'location'];
+    if (quizScreens.includes(screenId)) {
         document.getElementById('header').style.display = 'block';
+    } else {
+        document.getElementById('header').style.display = 'none';
     }
     
     if (screenId === 'swipe') {
