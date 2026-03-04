@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
     }, 1000);
+    //cache le header au chargement
+    document.getElementById('header').style.display = 'none';
     
     loadDarkMode();
     loadFavorites();
