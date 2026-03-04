@@ -93,6 +93,7 @@ body {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: var(--card-shadow);
+    display: none; /* au chargement */
 }
 
 .progress-bar {
