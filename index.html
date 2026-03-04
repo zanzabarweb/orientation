@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <title>Orientation Quest</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <h2>Chargement...</h2>
+        </div>
+    </div>
+    <div id="app" class="app-container">
+        <header id="header" class="header">
+            <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+            <div class="header-content">
+                <h1 id="headerTitle">Orientation Quest</h1>
+                <div class="header-right">
+                    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Mode sombre">
+                        <span class="dark-mode-icon">🌙</span>
+                    </button>
+                    <div id="badges" class="badges-container"></div>
+                </div>
+            </div>
+        </header>
+        <section id="welcome" class="screen active">
+            <div class="welcome-hero">
+                <div class="hero-emoji">🚀</div>
+                <h1 class="hero-title">Bienvenue dans<br><span class="gradient-text">Orientation Quest</span></h1>
+                <p class="hero-subtitle">Découvre ton parcours d'études supérieures</p>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-number">79</span><span class="stat-label">Formations</span></div>
+                    <div class="stat"><span class="stat-number">9</span><span class="stat-label">Domaines</span></div>
+                    <div class="stat"><span class="stat-number">15</span><span class="stat-label">Établissements</span></div>
+                </div>
+                <button class="btn btn-primary btn-large" onclick="startQuest()">Commencer ma quête 🎯</button>
+                <button class="btn btn-secondary" onclick="showScreen('swipe')">Swipe ton avenir 💕</button>
+                <button class="btn btn-secondary" onclick="showScreen('explore')">Explorer librement 🗺️</button>
+            </div>
+        </section>
+        <section id="avatar" class="screen">
+            <div class="step-content">
+                <div class="step-number">Étape 1/5</div>
+                <h2 class="step-title">Qui es-tu ? 🎭</h2>
+                <p class="step-subtitle">Choisis un avatar</p>
+                <div class="avatar-grid">
+                    <div class="avatar-card" onclick="selectAvatar('🎓', 'Studieux')"><div class="avatar-emoji">🎓</div><div class="avatar-name">Studieux</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('🚀', 'Ambitieux')"><div class="avatar-emoji">🚀</div><div class="avatar-name">Ambitieux</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('🎨', 'Créatif')"><div class="avatar-emoji">🎨</div><div class="avatar-name">Créatif</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('🔬', 'Scientifique')"><div class="avatar-emoji">🔬</div><div class="avatar-name">Scientifique</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('💼', 'Business')"><div class="avatar-emoji">💼</div><div class="avatar-name">Business</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('🌱', 'Nature')"><div class="avatar-emoji">🌱</div><div class="avatar-name">Nature</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('💪', 'Sportif')"><div class="avatar-emoji">💪</div><div class="avatar-name">Sportif</div></div>
+                    <div class="avatar-card" onclick="selectAvatar('🎭', 'Polyvalent')"><div class="avatar-emoji">🎭</div><div class="avatar-name">Polyvalent</div></div>
+                </div>
+                <div class="step-actions"><button class="btn btn-secondary" onclick="showScreen('welcome')">← Retour</button></div>
+            </div>
+        </section>
+        <section id="interests" class="screen">
+            <div class="step-content">
+                <div class="step-number">Étape 2/5</div>
+                <h2 class="step-title">Tes super-pouvoirs 💫</h2>
+                <p class="step-subtitle">Sélectionne 1 à 3 domaines</p>
+                <div id="domainesContainer" class="interests-grid"></div>
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="showScreen('avatar')">← Retour</button>
+                    <button id="btnNextInterests" class="btn btn-primary" onclick="nextStep('interests')" disabled>Continuer →</button>
+                </div>
+            </div>
+        </section>
+        <section id="studyStyle" class="screen">
+            <div class="step-content">
+                <div class="step-number">Étape 3/5</div>
+                <h2 class="step-title">Ton style d'études 📚</h2>
+                <p class="step-subtitle">Comment veux-tu apprendre ?</p>
+                <div class="style-cards">
+                    <div class="style-card" onclick="selectStudyStyle('SCOLAIRE')"><div class="style-icon">🎓</div><h3>Scolaire</h3><p>Formation classique</p><ul><li>Cours théoriques</li><li>Stages</li><li>Vie étudiante</li></ul></div>
+                    <div class="style-card" onclick="selectStudyStyle('ALTERNANCE')"><div class="style-icon">💼</div><h3>Alternance</h3><p>École + entreprise</p><ul><li>Expérience pro</li><li>Rémunération</li><li>Insertion</li></ul></div>
+                    <div class="style-card" onclick="selectStudyStyle('MIXTE')"><div class="style-icon">🔄</div><h3>Les deux</h3><p>Tout voir</p><ul><li>Flexibilité</li><li>Plus de choix</li><li>Décider plus tard</li></ul></div>
+                </div>
+                <div class="step-actions"><button class="btn btn-secondary" onclick="showScreen('interests')">← Retour</button></div>
+            </div>
+        </section>
+        <section id="level" class="screen">
+            <div class="step-content">
+                <div class="step-number">Étape 4/5</div>
+                <h2 class="step-title">Ton niveau d'ambition 🎯</h2>
+                <p class="step-subtitle">Jusqu'où veux-tu aller ?</p>
+                <div class="level-timeline">
+                    <div class="level-option" onclick="selectLevel('BTS', 'BTSA')"><div class="level-duration">2 ans</div><div class="level-icon">📘</div><h3>BTS/BTSA</h3><p>Bac+2</p><div class="level-badge">Court</div></div>
+                    <div class="level-option" onclick="selectLevel('Licence', 'Licence Pro', 'Bachelor')"><div class="level-duration">3 ans</div><div class="level-icon">📗</div><h3>Licence</h3><p>Bac+3</p><div class="level-badge">Équilibré</div></div>
+                    <div class="level-option" onclick="selectLevel('Master')"><div class="level-duration">5 ans</div><div class="level-icon">📕</div><h3>Master</h3><p>Bac+5</p><div class="level-badge">Expert</div></div>
+                    <div class="level-option" onclick="selectLevel('ALL')"><div class="level-duration">Variable</div><div class="level-icon">📚</div><h3>Tout voir</h3><p>Tous</p><div class="level-badge">Explorer</div></div>
+                </div>
+                <div class="step-actions"><button class="btn btn-secondary" onclick="showScreen('studyStyle')">← Retour</button></div>
+            </div>
+        </section>
+        <section id="location" class="screen">
+            <div class="step-content">
+                <div class="step-number">Étape 5/5</div>
+                <h2 class="step-title">Ta zone 📍</h2>
+                <p class="step-subtitle">Où étudier ?</p>
+                <div class="location-options">
+                    <button class="location-btn" onclick="selectLocation('ALL')">🗺️ Tous les établissements</button>
+                    <div class="location-divider">ou choisis une zone</div>
+                    <div id="etablissementsContainer" class="etablissements-grid"></div>
+                </div>
+                <div class="step-actions"><button class="btn btn-secondary" onclick="showScreen('level')">← Retour</button></div>
+            </div>
+        </section>
+        <section id="swipe" class="screen">
+            <div class="swipe-content">
+                <div class="swipe-header">
+                    <h2 class="swipe-title">💕 Swipe ton Avenir</h2>
+                    <p class="swipe-subtitle">Swipe → si ça t'intéresse, ← sinon</p>
+                    <div class="swipe-counter">
+                        <span id="swipeCounter">0</span> / <span id="swipeTotal">79</span>
+                    </div>
+                </div>
+                <div class="swipe-container">
+                    <div id="swipeStack" class="swipe-stack"></div>
+                    <div id="swipeEmpty" class="swipe-empty" style="display:none;">
+                        <div class="empty-emoji">🎉</div>
+                        <h3>Terminé !</h3>
+                        <p>Tu as parcouru toutes les formations</p>
+                        <button class="btn btn-primary" onclick="showSwipeResults()">Voir mes coups de cœur</button>
+                        <button class="btn btn-secondary" onclick="resetSwipe()">Recommencer</button>
+                    </div>
+                </div>
+                <div class="swipe-actions">
+                    <button class="swipe-btn swipe-btn-nope" onclick="swipeLeft()">
+                        <span class="swipe-btn-icon">👎</span>
+                        <span class="swipe-btn-text">Pas pour moi</span>
+                    </button>
+                    <button class="swipe-btn swipe-btn-like" onclick="swipeRight()">
+                        <span class="swipe-btn-icon">💚</span>
+                        <span class="swipe-btn-text">Ça m'intéresse</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section id="results" class="screen">
+            <div class="results-content">
+                <div class="results-hero"><div class="results-emoji">🎉</div><h2 class="results-title">Résultats !</h2><p id="resultsSubtitle" class="results-subtitle"></p></div>
+                <div id="resultsContainer" class="results-grid"></div>
+                <div class="results-actions">
+                    <button class="btn btn-primary" onclick="showScreen('welcome')">🏠 Recommencer</button>
+                    <button class="btn btn-secondary" onclick="showFavorites()">⭐ Mes favoris</button>
+                </div>
+            </div>
+        </section>
+        <section id="explore" class="screen">
+            <div class="explore-content">
+                <h2 class="explore-title">🗺️ Explorer</h2>
+                <div class="explore-filters">
+                    <select id="filterDomaine" class="filter-select" onchange="applyFilters()"><option value="">Tous les domaines</option></select>
+                    <select id="filterNiveau" class="filter-select" onchange="applyFilters()"><option value="">Tous les niveaux</option></select>
+                    <select id="filterVoie" class="filter-select" onchange="applyFilters()"><option value="">Toutes les voies</option></select>
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher..." oninput="applyFilters()">
+                </div>
+                <div id="exploreContainer" class="explore-grid"></div>
+            </div>
+        </section>
+        <section id="favorites" class="screen">
+            <div class="favorites-content">
+                <h2 class="favorites-title">⭐ Mon carnet</h2>
+                <p class="favorites-subtitle">Tes favoris</p>
+                <div id="favoritesContainer" class="results-grid"></div>
+                <div class="favorites-actions">
+                    <button class="btn btn-secondary" onclick="goBack()">← Retour</button>
+                    <button class="btn btn-danger" onclick="clearFavorites()">🗑️ Effacer</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('welcome')" data-screen="welcome">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Accueil</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('swipe')" data-screen="swipe">
+            <span class="nav-icon">💕</span>
+            <span class="nav-label">Swipe</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('explore')" data-screen="explore">
+            <span class="nav-icon">🗺️</span>
+            <span class="nav-label">Explorer</span>
+        </button>
+        <button class="nav-item" onclick="showFavorites()" data-screen="favorites">
+            <span class="nav-icon">⭐</span>
+            <span class="nav-label">Favoris</span>
+            <span id="navFavCount" class="nav-badge">0</span>
+        </button>
+    </nav>
+    
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
