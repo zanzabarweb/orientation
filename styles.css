@@ -559,6 +559,17 @@ body {
 .location-options {
     margin-bottom: 40px;
 }
+.meta-badge-bac {
+    background: linear-gradient(135deg, var(--warning), #f59e0b);
+    color: white;
+    border: none;
+}
+
+.swipe-badge-bac {
+    background: linear-gradient(135deg, var(--warning), #f59e0b);
+    color: white;
+    border: none;
+}
 
 .location-btn {
     width: 100%;
