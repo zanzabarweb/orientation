@@ -119,8 +119,11 @@ function startQuest() {
 
 // Mise à jour de la barre de progression
 function updateProgress() {
-    const progress = (state.currentStep / state.totalSteps) * 100;
-    document.getElementById('progress').style.width = progress + '%';
+    const progressBar = document.getElementById('progress');
+    if (progressBar) {
+        const progress = (state.currentStep / state.totalSteps) * 100;
+        progressBar.style.width = progress + '%';
+    }
 }
 
 // Étape 1: Sélection avatar
