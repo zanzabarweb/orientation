@@ -29,7 +29,7 @@ body.dark-mode {
     --text-light: #94a3b8;
     --border: #334155;
     --card-bg: #1e293b;
-    --gradient-bg: linear-gradient(135deg, #4c1d95 0%, #581c87 100%);
+    --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 body {
@@ -685,6 +685,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 3px solid #0000001a;
 }
 
 .swipe-card:active {
