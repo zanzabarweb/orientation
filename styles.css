@@ -1085,7 +1085,7 @@ body {
     }
     
     .hero-stats {
-        flex-direction: column;
+        flex-direction: row;
         gap: 20px;
     }
     
