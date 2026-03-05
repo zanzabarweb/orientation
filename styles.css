@@ -1097,7 +1097,75 @@ body {
     min-width: 18px;
     text-align: center;
 }
+.summary-card {
+    background: var(--bg-light);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+}
 
+.summary-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.summary-icon {
+    font-size: 32px;
+    min-width: 48px;
+    text-align: center;
+}
+
+.summary-label {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.summary-value, .summary-values {
+    color: var(--text-light);
+    font-size: 1.05rem;
+}
+
+.summary-values {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.summary-result {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.summary-result-emoji {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.summary-result-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.summary-result-text span {
+    font-size: 2rem;
+    font-weight: 700;
+}
 @media (max-width: 768px) {
     .app-container {
         padding: 10px;
