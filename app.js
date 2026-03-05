@@ -47,6 +47,137 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavbar();
 });
 
+// PWA Installation
+let deferredPrompt = null;
+let isInstallable = false;
+
+// Détection si déjà installé
+function isAppInstalled() {
+    // Si déjà en mode standalone, c'est installé
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        return true;
+    }
+    // iOS Safari
+    if (window.navigator.standalone === true) {
+        return true;
+    }
+    return false;
+}
+
+// Détection de la plateforme
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+function isAndroid() {
+    return /Android/.test(navigator.userAgent);
+}
+
+// Afficher le banner d'installation
+function showInstallBanner() {
+    // Ne pas afficher si déjà installé
+    if (isAppInstalled()) {
+        return;
+    }
+    
+    // Ne pas afficher si déjà fermé aujourd'hui
+    const lastClosed = localStorage.getItem('installBannerClosed');
+    if (lastClosed) {
+        const closedDate = new Date(lastClosed);
+        const now = new Date();
+        const hoursSinceClosed = (now - closedDate) / (1000 * 60 * 60);
+        
+        // Attendre 24h avant de réafficher
+        if (hoursSinceClosed < 24) {
+            return;
+        }
+    }
+    
+    const banner = document.getElementById('installBanner');
+    const instructions = document.getElementById('installInstructions');
+    const installBtn = document.getElementById('installBtn');
+    
+    if (isIOS()) {
+        // iOS : instructions manuelles
+        instructions.innerHTML = 'Appuie sur <strong>Partager</strong> puis <strong>Sur l\'écran d\'accueil</strong>';
+        installBtn.style.display = 'none'; // Pas de bouton auto sur iOS
+    } else if (isAndroid() || isInstallable) {
+        // Android/Chrome : bouton automatique
+        instructions.textContent = 'Accès rapide depuis ton écran d\'accueil';
+        installBtn.style.display = 'block';
+    } else {
+        // Autre navigateur
+        instructions.textContent = 'Pour un accès plus rapide';
+        installBtn.style.display = 'none';
+    }
+    
+    banner.style.display = 'block';
+}
+
+// Fermer le banner
+function closeInstallBanner() {
+    document.getElementById('installBanner').style.display = 'none';
+    localStorage.setItem('installBannerClosed', new Date().toISOString());
+}
+
+// Gérer l'installation automatique (Android/Chrome)
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Empêcher le prompt automatique
+    e.preventDefault();
+    
+    // Stocker l'événement pour l'utiliser plus tard
+    deferredPrompt = e;
+    isInstallable = true;
+    
+    // Afficher notre banner personnalisé
+    setTimeout(() => {
+        showInstallBanner();
+    }, 3000); // Attendre 3 secondes après le chargement
+});
+
+// Clic sur le bouton "Installer"
+document.addEventListener('DOMContentLoaded', () => {
+    const installBtn = document.getElementById('installBtn');
+    
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                return;
+            }
+            
+            // Afficher le prompt d'installation
+            deferredPrompt.prompt();
+            
+            // Attendre la réponse de l'utilisateur
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('PWA installée !');
+            }
+            
+            // Réinitialiser
+            deferredPrompt = null;
+            closeInstallBanner();
+        });
+    }
+    
+    // Sur iOS, afficher après 5 secondes
+    if (isIOS() && !isAppInstalled()) {
+        setTimeout(() => {
+            showInstallBanner();
+        }, 5000);
+    }
+});
+
+// Détecter quand l'app est installée
+window.addEventListener('appinstalled', () => {
+    console.log('PWA installée avec succès !');
+    closeInstallBanner();
+    
+    // Optionnel : afficher un message de confirmation
+    // alert('✅ Orientation Quest est maintenant installée !');
+});
+
 // Dark Mode
 function toggleDarkMode() {
     state.darkMode = !state.darkMode;
