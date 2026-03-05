@@ -667,6 +667,7 @@ function createSwipeCard(formation, zIndex) {
     let isDragging = false;
     
     const onStart = (e) => {
+        e.preventDefault();
         isDragging = true;
         startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
         card.classList.add('swiping');
@@ -674,6 +675,7 @@ function createSwipeCard(formation, zIndex) {
     
     const onMove = (e) => {
         if (!isDragging) return;
+        e.preventDefault();
         currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
         const diff = currentX - startX;
         const rotation = diff / 20;
@@ -716,9 +718,9 @@ function createSwipeCard(formation, zIndex) {
     };
     
     card.addEventListener('mousedown', onStart);
-    card.addEventListener('touchstart', onStart);
+    card.addEventListener('touchstart', onStart, { passive: false });
     document.addEventListener('mousemove', onMove);
-    document.addEventListener('touchmove', onMove);
+    document.addEventListener('touchmove', onMove, { passive: false });
     document.addEventListener('mouseup', onEnd);
     document.addEventListener('touchend', onEnd);
     
