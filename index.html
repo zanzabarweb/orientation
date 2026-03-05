@@ -10,6 +10,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Banner d'installation PWA -->
+    <div id="installBanner" class="install-banner" style="display: none;">
+        <div class="install-banner-content">
+            <div class="install-banner-icon">🚀</div>
+            <div class="install-banner-text">
+                <div class="install-banner-title">Installer Orientation Quest</div>
+                <div class="install-banner-subtitle" id="installInstructions"></div>
+            </div>
+            <button class="install-banner-btn" id="installBtn">Installer</button>
+            <button class="install-banner-close" onclick="closeInstallBanner()">✕</button>
+        </div>
+    </div>
      <button class="dark-mode-toggle-floating" onclick="toggleDarkMode()" title="Mode sombre">
         <span class="dark-mode-icon">🌙</span>
     </button>
