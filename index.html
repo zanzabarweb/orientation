@@ -144,6 +144,56 @@
                 </div>
             </div>
         </section>
+        <section id="summary" class="screen">
+            <div class="step-content">
+                <div class="step-number">Récapitulatif</div>
+                <h2 class="step-title">📋 Ton profil de recherche</h2>
+                <p class="step-subtitle">Vérifie tes choix avant de voir les résultats</p>
+                
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <div class="summary-icon" id="summaryAvatar"></div>
+                        <div class="summary-label">Ton avatar</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon">💫</div>
+                        <div class="summary-label">Domaine(s) d'intérêt</div>
+                        <div id="summaryInterests" class="summary-values"></div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon">📚</div>
+                        <div class="summary-label">Style d'études</div>
+                        <div id="summaryStyle" class="summary-value"></div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon">🎯</div>
+                        <div class="summary-label">Niveau visé</div>
+                        <div id="summaryLevel" class="summary-value"></div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-icon">📍</div>
+                        <div class="summary-label">Zone géographique</div>
+                        <div id="summaryLocation" class="summary-value"></div>
+                    </div>
+                </div>
+                
+                <div class="summary-result">
+                    <div class="summary-result-emoji">✨</div>
+                    <div class="summary-result-text">
+                        <span id="summaryCount">0</span> formation(s) correspondent à ton profil
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn btn-secondary" onclick="showScreen('location')">← Modifier</button>
+                    <button class="btn btn-primary" onclick="showFinalResults()">Voir mes résultats →</button>
+                </div>
+            </div>
+        </section>
         <section id="results" class="screen">
             <div class="results-content">
                 <div class="results-hero"><div class="results-emoji">🎉</div><h2 class="results-title">Résultats !</h2><p id="resultsSubtitle" class="results-subtitle"></p></div>
