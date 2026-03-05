@@ -1,11 +1,11 @@
-const CACHE_NAME = 'orientation-quest-v1';
+const CACHE_NAME = 'orientation-quest-v2';  // Changez la version !
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/app.js',
-  '/data.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './data.js',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
