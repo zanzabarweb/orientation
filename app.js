@@ -14,7 +14,7 @@ const state = {
     swipeIndex: 0,
     swipeFormations: [],
     currentStep: 0,
-    totalSteps: 5,
+    totalSteps: 6,
     darkMode: false
 };
 
@@ -73,7 +73,7 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
     
     // Afficher le header uniquement sur les écrans du quiz
-    const quizScreens = ['avatar', 'interests', 'studyStyle', 'level', 'location'];
+    const quizScreens = ['avatar', 'interests', 'studyStyle', 'level', 'location', 'summary', 'results'];
     if (quizScreens.includes(screenId)) {
         document.getElementById('header').style.display = 'block';
     } else {
@@ -247,49 +247,157 @@ function selectLocation(...locations) {
     updateProgress();
     
     setTimeout(() => {
-        calculateResults();
+        showSummary(); // Au lieu de calculateResults()
     }, 300);
+}
+
+function showSummary() {
+    showScreen('summary');
+    
+    // Avatar
+    document.getElementById('summaryAvatar').textContent = state.quest.avatar.emoji;
+    
+    // Domaines
+    const interestsContainer = document.getElementById('summaryInterests');
+    interestsContainer.innerHTML = state.quest.interests
+        .map(d => `<div>${domaineIcons[d] || '📖'} ${d}</div>`)
+        .join('');
+    
+    // Style
+    const styleLabels = {
+        'SCOLAIRE': '🎓 Formation scolaire',
+        'ALTERNANCE': '💼 Alternance',
+        'MIXTE': '🔄 Les deux (ouvert)'
+    };
+    document.getElementById('summaryStyle').textContent = 
+        styleLabels[state.quest.studyStyle] || state.quest.studyStyle;
+    
+    // Niveau
+    let levelText = '';
+    if (state.quest.level.includes('ALL')) {
+        levelText = 'Tous les niveaux';
+    } else if (state.quest.level.includes('BTS') || state.quest.level.includes('BTSA')) {
+        levelText = '📘 Bac+2 (BTS/BTSA)';
+    } else if (state.quest.level.includes('Licence')) {
+        levelText = '📗 Bac+3 (Licence/Bachelor)';
+    } else if (state.quest.level.includes('Master')) {
+        levelText = '📕 Bac+5 (Master)';
+    }
+    document.getElementById('summaryLevel').textContent = levelText;
+    
+    // Localisation
+    const locationText = state.quest.location.length === DATA.etablissements.length
+        ? 'Tous les établissements'
+        : state.quest.location.length <= 3
+            ? state.quest.location.join(', ')
+            : `${state.quest.location.length} établissements sélectionnés`;
+    document.getElementById('summaryLocation').textContent = locationText;
+    
+    // Compter les formations
+    const count = countMatchingFormations();
+    document.getElementById('summaryCount').textContent = count;
+}
+
+function countMatchingFormations() {
+    // ÉTAPE 1 : Filtrage strict par domaine
+    let formations = DATA.formations;
+    
+    if (state.quest.interests.length > 0) {
+        formations = formations.filter(f => 
+            state.quest.interests.includes(f.domaine)
+        );
+    }
+    
+    // ÉTAPE 2 : Compter ceux qui passent le seuil
+    let count = 0;
+    formations.forEach(formation => {
+        let score = 0;
+        
+        // Voie (40 pts)
+        if (state.quest.studyStyle === 'MIXTE') {
+            score += 40;
+        } else if (formation.voie.includes(state.quest.studyStyle)) {
+            score += 40;
+        }
+        
+        // Niveau (40 pts)
+        if (state.quest.level.includes('ALL')) {
+            score += 40;
+        } else if (state.quest.level.some(l => formation.niveau.includes(l))) {
+            score += 40;
+        }
+        
+        // Localisation (20 pts)
+        const hasEtab = formation.etablissements.some(e => state.quest.location.includes(e));
+        if (hasEtab) {
+            score += 20;
+        }
+        
+        // Seuil : 50 pts
+        if (score >= 50) {
+            count++;
+        }
+    });
+    
+    return count;
+}
+function showFinalResults() {
+    calculateResults();
 }
 
 // Calculer et afficher les résultats
 function calculateResults() {
+    // ÉTAPE 1 : Filtrage STRICT par domaine(s) choisi(s)
+    let formations = DATA.formations;
+    
+    if (state.quest.interests.length > 0) {
+        formations = formations.filter(f => 
+            state.quest.interests.includes(f.domaine)
+        );
+    }
+    
+    // ÉTAPE 2 : Scoring sur les formations filtrées
     const results = [];
     
-    DATA.formations.forEach(formation => {
+    formations.forEach(formation => {
         let score = 0;
         let reasons = [];
         
-        if (state.quest.interests.includes(formation.domaine)) {
-            score += 40;
-            reasons.push('Domaine choisi');
-        }
-        
+        // Voie d'études (40 points)
         if (state.quest.studyStyle === 'MIXTE') {
-            score += 20;
+            score += 40;
+            reasons.push('Ouvert à toutes les voies');
         } else if (formation.voie.includes(state.quest.studyStyle)) {
-            score += 30;
+            score += 40;
             reasons.push('Voie compatible');
         }
         
+        // Niveau d'études (40 points)
         if (state.quest.level.includes('ALL')) {
-            score += 10;
+            score += 40;
+            reasons.push('Ouvert à tous les niveaux');
         } else if (state.quest.level.some(l => formation.niveau.includes(l))) {
-            score += 30;
+            score += 40;
             reasons.push('Niveau compatible');
         }
         
+        // Localisation (20 points)
         const hasEtab = formation.etablissements.some(e => state.quest.location.includes(e));
         if (hasEtab) {
             score += 20;
             reasons.push('Établissement proche');
         }
         
-        if (score >= 30) {
+        // Seuil minimum : 50 points (au lieu de 30)
+        if (score >= 50) {
             results.push({ formation, score, reasons });
         }
     });
     
+    // Tri par score décroissant
     results.sort((a, b) => b.score - a.score);
+    
+    // Affichage
     displayResults(results);
 }
 
@@ -307,7 +415,7 @@ function displayResults(results) {
         return;
     }
     
-    results.slice(0, 20).forEach(({ formation, score }) => {
+    results.forEach(({ formation, score }) => {
         container.appendChild(createFormationCard(formation, score));
     });
 }
