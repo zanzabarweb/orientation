@@ -664,6 +664,9 @@ body {
     position: relative;
     height: 500px;
     margin-bottom: 32px;
+    /* bug swip */
+    touch-action: pan-y pinch-zoom;
+    overflow: hidden; /* Empêche tout débordement */
 }
 
 .swipe-stack {
@@ -686,6 +689,10 @@ body {
     flex-direction: column;
     justify-content: space-between;
     border: 3px solid #0000001a;
+    /* bug swip */
+    touch-action: pan-y pinch-zoom; /* Autorise scroll vertical, bloque horizontal */
+    user-select: none; /* Empêche la sélection de texte */
+    -webkit-user-drag: none; /* Empêche le drag sur iOS */
 }
 
 .swipe-card:active {
