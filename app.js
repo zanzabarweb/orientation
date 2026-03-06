@@ -666,8 +666,8 @@ function createSwipeCard(formation, zIndex) {
     let currentX = 0;
     let isDragging = false;
     
-    const onStart = (e) => {
-        e.preventDefault();
+    const onStart = (e) => { 
+        e.preventDefault();//test
         isDragging = true;
         startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
         card.classList.add('swiping');
